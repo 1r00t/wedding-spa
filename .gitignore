@@ -1,0 +1,12 @@
+.vscode/
+__pycache__/
+env/
+.DS_Store/
+node_modules/
+build/
+.svelte-kit/
+package/
+user_uploads/
+.env
+.env.*
+db.sqlite3
