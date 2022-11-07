@@ -5,6 +5,9 @@ module.exports = {
     extend: {
       fontFamily: {
         'Quicksand': ['Quicksand'],
+      },
+      backgroundImage: {
+        'placeholder': "url(/images/photo.svg)",
       }
     },
   },

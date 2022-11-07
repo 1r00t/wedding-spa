@@ -14,6 +14,6 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 
 	return {
 		username: locals.user.username,
-		posts
+		posts,
 	}
 }

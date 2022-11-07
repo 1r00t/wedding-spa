@@ -1,9 +1,21 @@
+from enum import unique
+from unicodedata import name
 import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
 
 from django_resized import ResizedImageField
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return f"{self.id} - {self.name}"
 
 
 class Post(models.Model):
@@ -16,6 +28,13 @@ class Post(models.Model):
         force_format="jpeg",
         blank=True,
     )
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="category", default=1
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
 
     def __str__(self):
         return self.user.username

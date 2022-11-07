@@ -1,4 +1,4 @@
-type Post = {
+export type Post = {
 	id: string
 	user: {
 		username: string
