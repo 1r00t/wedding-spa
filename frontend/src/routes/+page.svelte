@@ -1,21 +1,22 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import type { PaginatedPosts, Post } from '$lib/types'
+	import type { PostType, PaginationType } from '$lib/types'
 
 	import UploadModal from './UploadModal.svelte'
 	import Foto from './Foto.svelte'
 	import UploadButton from './UploadButton.svelte'
 	import Pagination from './Pagination.svelte'
 
-	const paginatedPosts: PaginatedPosts = $page.data.posts
-	console.log(paginatedPosts)
-	let posts = paginatedPosts.results
+	let posts: PostType[] = $page.data.posts
+	console.log(posts)
+	let pagination: PaginationType = $page.data.pagination
 
 	let showModal = false
 
 	let currentPage = 1
 
-	function newPost(event: { detail: Post }) {
+	function newPost(event: { detail: PostType }) {
+		// TODO: remove n posts from bottom and somehow update paginantion ?
 		const post = event.detail
 		posts = [post, ...posts]
 	}
@@ -45,7 +46,7 @@
 	</div>
 </section>
 
-{#if paginatedPosts.next}
-	<!-- wie am besten ? -->
-	<!-- <Pagination bind:paginatedPosts bind:currentPage /> -->
-{/if}
+<!-- {#if pagination.next} -->
+<!-- wie am besten ? -->
+<Pagination bind:posts bind:currentPage bind:pagination />
+<!-- {/if} -->

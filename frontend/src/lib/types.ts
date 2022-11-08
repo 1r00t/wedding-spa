@@ -1,4 +1,4 @@
-export type Post = {
+export type PostType = {
 	id: string
 	user: {
 		username: string
@@ -6,9 +6,13 @@ export type Post = {
 	foto: string
 }
 
-export type PaginatedPosts = {
+export type PaginationType = {
 	count: number
-	next: number
-	previous: number
-	results: Post[]
+	next: number | null
+	current: number
+	previous: number | null
+}
+
+export type PostsResponseType = PaginationType & {
+	results: PostType[]
 }
