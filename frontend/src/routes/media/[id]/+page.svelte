@@ -1,8 +1,14 @@
 <script lang="ts">
-	export let data
-	const { id, post } = data
+	import type { PostType } from '$lib/types'
+	import Foto from '$lib/components/Foto.svelte'
+	import { page } from '$app/stores'
+	import type { PageData } from './$types'
+	export let data: PageData
+	const post: PostType = data.post
 </script>
 
-<article>
-	<img src={post.foto} alt="Foto von {post.user.username}" />
-</article>
+<Foto {post} isLink={false} />
+
+{#if post.user.username == $page.data.user.username}
+	eigenes foto
+{/if}

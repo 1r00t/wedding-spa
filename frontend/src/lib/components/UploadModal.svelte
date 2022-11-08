@@ -2,11 +2,11 @@
 	import { fade, fly, slide } from 'svelte/transition'
 	import { clickOutside } from '$lib/helpers'
 	import { createEventDispatcher } from 'svelte'
+	import { accessToken } from '$lib/stores'
 
 	const dispatch = createEventDispatcher()
 
 	export let showModal
-	export let token: string
 
 	let loading = false
 
@@ -44,7 +44,7 @@
 			formData.append('foto', file)
 			const response = await fetch('http://localhost:8000/posts/', {
 				headers: {
-					Authorization: `Token ${token}`
+					Authorization: `Token ${$accessToken}`
 				},
 				method: 'POST',
 				body: formData
@@ -60,7 +60,7 @@
 </script>
 
 <div
-	class="fixed inset-0 z-10 flex items-center justify-center bg-stone-600/80 backdrop-blur-lg"
+	class="fixed inset-0 z-20 flex items-center justify-center bg-stone-600/80 backdrop-blur-lg"
 	transition:fade={{ duration: 150 }}
 >
 	<div

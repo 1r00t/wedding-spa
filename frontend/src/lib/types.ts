@@ -4,6 +4,7 @@ export type PostType = {
 		username: string
 	}
 	foto: string
+	category: CategoryType
 }
 
 export type PaginationType = {
@@ -13,6 +14,11 @@ export type PaginationType = {
 	previous: number | null
 }
 
-export type PostsResponseType = PaginationType & {
+export type PaginatedPostsType = PaginationType & {
 	results: PostType[]
+}
+
+export type CategoryType = {
+	id: number
+	name: string
 }

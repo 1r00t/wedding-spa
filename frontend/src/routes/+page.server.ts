@@ -1,22 +1,22 @@
 import { redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
-import type { PostsResponseType, PostType, PaginationType } from '$lib/types'
+import type { PaginatedPostsType, PostType, PaginationType, CategoryType } from '$lib/types'
 
 export const load: PageServerLoad = async ({ locals, fetch }) => {
 	if (!locals.user?.isAuthenticated) throw redirect(301, '/login')
 
-	const response = await fetch('http://localhost:8000/posts/')
+	const postsResponse = await fetch('http://localhost:8000/posts/')
 
 	let posts: PostType[] = []
-	let paginatedPosts = <PostsResponseType>{}
+	let paginatedPosts = <PaginatedPostsType>{}
 	let pagination: PaginationType = {
 		next: null,
 		current: 1,
 		previous: null,
 		count: 0
 	}
-	if (response.ok) {
-		paginatedPosts = await response.json()
+	if (postsResponse.ok) {
+		paginatedPosts = await postsResponse.json()
 		posts = paginatedPosts.results
 		pagination = {
 			next: paginatedPosts.next,
@@ -26,9 +26,16 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 		}
 	}
 
+	const categoryResponse = await fetch('http://localhost:8000/posts/categories/')
+
+	let categories: CategoryType[] = []
+	if (categoryResponse.ok) {
+		categories = await categoryResponse.json()
+	}
+
 	return {
-		username: locals.user.username,
 		posts,
-		pagination
+		pagination,
+		categories
 	}
 }

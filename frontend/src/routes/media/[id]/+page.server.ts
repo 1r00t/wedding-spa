@@ -1,20 +1,23 @@
-import { redirect } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
+import type { PostType } from '$lib/types'
 
 export const load: PageServerLoad = async ({ params, fetch, locals }) => {
 
-    if (!locals.user?.isAuthenticated) throw redirect(301, '/')
+    if (!locals.user?.isAuthenticated) throw redirect(301, '/login')
 
     const id = params.id
+    let post: PostType
 
-    const postResponse = await fetch(`http://localhost:8000/posts/${id}/`)
-    let post = {}
-    if (postResponse.ok) {
-        post = await postResponse.json()
+    const response = await fetch(`http://localhost:8000/posts/${id}/`)
+
+    if (response.ok) {
+        post = await response.json()
+    } else {
+        return error(404, JSON.stringify({ details: "post not found!" }))
     }
 
     return {
-        id,
         post
     }
 }

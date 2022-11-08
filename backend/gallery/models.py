@@ -22,9 +22,9 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     foto = ResizedImageField(
-        size=[1920, None],
+        size=[None, 2160],
         upload_to="user_uploads",
-        quality=80,
+        quality=90,
         force_format="jpeg",
         blank=True,
     )
