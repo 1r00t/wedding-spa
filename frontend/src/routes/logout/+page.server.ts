@@ -7,7 +7,11 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	default({ cookies }) {
-		cookies.set('access_token', '', {
+		cookies.set('access', '', {
+			path: '/',
+			expires: new Date(0)
+		})
+		cookies.set('refresh', '', {
 			path: '/',
 			expires: new Date(0)
 		})

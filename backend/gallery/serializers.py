@@ -1,5 +1,3 @@
-from typing_extensions import Required
-from pkg_resources import require
 from rest_framework import serializers
 from gallery import models
 from core.serializers import UserSerializer

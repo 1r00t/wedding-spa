@@ -37,10 +37,9 @@ const username: Action = async ({ request, fetch, cookies }) => {
 		body: JSON.stringify({ username })
 	})
 	if (response.ok) {
-		const json = await response.json()
-		const accessToken = json?.token
-		cookies.set('access_token', accessToken)
-		cookies.set('username', json?.username)
+		const { refresh, access } = await response.json()
+		cookies.set('refresh', refresh)
+		cookies.set('access', access)
 		throw redirect(301, '/')
 	}
 }

@@ -27,3 +27,12 @@ export type UserType = {
 	username: string
 	isAuthenticated: boolean
 }
+
+export type TokenType = {
+	token_type: 'access' | 'refresh'
+	exp: number
+	iat: number
+	jti: string
+	user_id: number
+	username: string
+}
