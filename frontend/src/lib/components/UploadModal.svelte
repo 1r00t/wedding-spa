@@ -41,10 +41,10 @@
 
 		imageFiles.forEach(async (file) => {
 			let formData = new FormData()
-			formData.append('foto', file)
-			const response = await fetch('http://localhost:8000/posts/', {
+			formData.append('picture', file)
+			const response = await fetch('http://localhost:8000/posts/create/', {
 				headers: {
-					Authorization: `Token ${$accessToken}`
+					Authorization: `Bearer ${$accessToken}`
 				},
 				method: 'POST',
 				body: formData

@@ -4,6 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework import exceptions
+from django.contrib.auth import get_user_model
 
 
 class TokenObtainSerializer(TokenObtainSerializer):
@@ -20,6 +21,14 @@ class TokenObtainSerializer(TokenObtainSerializer):
             authenticate_kwargs["request"] = self.context["request"]
         except KeyError:
             pass
+
+        # if get_user_model().objects.get(username=attrs[self.username_field]):
+        user, created = get_user_model().objects.get_or_create(
+            username=attrs[self.username_field]
+        )
+        if created:
+            user.set_password(attrs[self.username_field])
+            user.save()
 
         self.user = authenticate(**authenticate_kwargs)
 

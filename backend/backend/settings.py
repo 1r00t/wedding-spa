@@ -43,8 +43,19 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+PICTURES = {
+    "BREAKPOINTS": {
+        "sm": 640,
+        "md": 768,
+        "lg": 1024,
+        "xl": 1280,
+        "2xl": 1536,
+    },
+    "USE_PLACEHOLDERS": False,
 }
 
 # Application definition
@@ -59,8 +70,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
+    "pictures",
     "core",
     "gallery",
+    "django_cleanup",
 ]
 
 MIDDLEWARE = [
