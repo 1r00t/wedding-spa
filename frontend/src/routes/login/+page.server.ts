@@ -40,6 +40,7 @@ const username: Action = async ({ request, fetch, cookies }) => {
 		const json = await response.json()
 		const accessToken = json?.token
 		cookies.set('access_token', accessToken)
+		cookies.set('username', json?.username)
 		throw redirect(301, '/')
 	}
 }

@@ -1,27 +1,19 @@
 import type { Handle, HandleFetch } from '@sveltejs/kit'
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const accessToken = event.cookies.get('access_token') || ''
-	if (accessToken) {
-		const response = await fetch('http://localhost:8000/get_user/', {
-			headers: {
-				Authorization: `Token ${accessToken}`
-			}
-		})
-
-		if (response.ok) {
-			const json = await response.json()
-			event.locals.user = {
-				isAuthenticated: true,
-				username: json.username
-			}
+	const username = event.cookies.get('username')
+	if (username) {
+		event.locals.user = {
+			username,
+			isAuthenticated: true
 		}
 	} else {
 		event.locals.user = {
-			isAuthenticated: false,
-			username: ''
+			username: '',
+			isAuthenticated: false
 		}
 	}
+
 	return await resolve(event)
 }
 

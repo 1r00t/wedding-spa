@@ -23,7 +23,7 @@ class ObtainUserAuthToken(ObtainAuthToken):
             user.set_password(username)
             user.save()
         token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key})
+        return Response({"token": token.key, "username": user.username})
 
 
 @api_view(["GET"])

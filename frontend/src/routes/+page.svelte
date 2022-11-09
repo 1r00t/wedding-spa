@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { posts, filteredPosts, category, pagination } from '$lib/stores'
+	import { paginatedPosts, category } from '$lib/stores'
 
-	import type { PostType, PaginationType, CategoryType } from '$lib/types'
+	import type { PostType, CategoryType } from '$lib/types'
 
 	import UploadModal from '$lib/components/UploadModal.svelte'
 	import Foto from '$lib/components/Foto.svelte'
@@ -10,9 +10,8 @@
 	import Pagination from '$lib/components/Pagination.svelte'
 	import Filters from '$lib/components/Filters.svelte'
 
-	$posts = $page.data.posts
+	$paginatedPosts = $page.data.paginatedPosts
 	$category = $page.data.categories[0]
-	$pagination = $page.data.pagination
 
 	let categories: CategoryType[] = $page.data.categories
 
@@ -22,7 +21,7 @@
 	function newPost(event: { detail: PostType }) {
 		// TODO: remove n posts from bottom and somehow update paginantion ?
 		const post = event.detail
-		$posts = [post, ...$posts]
+		$paginatedPosts.results = [post, ...$paginatedPosts.results]
 	}
 
 	function newPage() {
@@ -50,7 +49,7 @@
 
 <section class="mt-10">
 	<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-		{#each $filteredPosts as post (post.id)}
+		{#each $paginatedPosts.results as post (post.id)}
 			<Foto {post} />
 		{/each}
 	</div>

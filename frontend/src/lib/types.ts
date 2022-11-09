@@ -22,3 +22,8 @@ export type CategoryType = {
 	id: number
 	name: string
 }
+
+export type UserType = {
+	username: string
+	isAuthenticated: boolean
+}

@@ -5,7 +5,14 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	const page = url.searchParams.get('page' ?? '1')
 	const categoryId = url.searchParams.get('category' ?? '1')
 
-	const response = await fetch(`http://localhost:8000/posts/categories/${categoryId}/?page=${page}`)
+	let requestUrl = ''
+
+	if (Number(categoryId) > 1) {
+		requestUrl = `http://localhost:8000/posts/categories/${categoryId}/?page=${page}`
+	} else {
+		requestUrl = `http://localhost:8000/posts/?page=${page}`
+	}
+	const response = await fetch(requestUrl)
 
 	if (response.ok) return new Response(JSON.stringify(await response.json()))
 

@@ -1,36 +1,32 @@
 <script lang="ts">
-	import type { PaginationType, PostType, PaginatedPostsType } from '$lib/types'
+	import type { PaginatedPostsType } from '$lib/types'
 	import { createEventDispatcher } from 'svelte'
-	import { posts, pagination } from '$lib/stores'
+	import { paginatedPosts, category } from '$lib/stores'
 
-	let currentPage = 1
+	let currentPage = 1 // TODO: this should also be a store
 
 	const dispatch = createEventDispatcher()
 
 	async function getPage(page: number | null) {
 		if (!page) return
-		const response = await fetch(`/api/posts?page=${page}`)
+		const response = await fetch(`/api/posts?page=${page}&category=${$category.id}`)
 
 		if (response.ok) {
 			const postsResponse: PaginatedPostsType = await response.json()
-			$posts = postsResponse.results
+			$paginatedPosts = postsResponse
 			currentPage = postsResponse.current
-			$pagination = {
-				count: postsResponse.count,
-				next: postsResponse.next,
-				current: postsResponse.current,
-				previous: postsResponse.previous
-			}
 			dispatch('newPage')
 		}
 	}
 </script>
 
 <section class="mt-10 flex justify-center gap-2">
-	<button disabled={$pagination.previous == null} on:click={() => getPage($pagination.previous)}
+	<button
+		disabled={$paginatedPosts.previous == null}
+		on:click={() => getPage($paginatedPosts.previous)}
 		><svg
 			xmlns="http://www.w3.org/2000/svg"
-			class:stroke-stone-300={$pagination.previous == null}
+			class:stroke-stone-300={$paginatedPosts.previous == null}
 			width="24"
 			height="24"
 			viewBox="0 0 24 24"
@@ -45,10 +41,10 @@
 		</svg></button
 	>
 	{currentPage}
-	<button disabled={$pagination.next == null} on:click={() => getPage($pagination.next)}
+	<button disabled={$paginatedPosts.next == null} on:click={() => getPage($paginatedPosts.next)}
 		><svg
 			xmlns="http://www.w3.org/2000/svg"
-			class:stroke-stone-300={$pagination.next == null}
+			class:stroke-stone-300={$paginatedPosts.next == null}
 			width="24"
 			height="24"
 			viewBox="0 0 24 24"
