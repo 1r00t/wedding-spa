@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { accessToken } from '$lib/stores'
+	import { accessToken, browserWidth } from '$lib/stores'
 	import { enhance } from '$app/forms'
 	import { page } from '$app/stores'
 	import '../fonts.css'
@@ -7,6 +7,8 @@
 
 	accessToken.set($page.data.token)
 </script>
+
+<svelte:window bind:innerWidth={$browserWidth} />
 
 <header
 	class="fixed top-0 z-10 flex h-24 w-full items-center justify-between bg-stone-700 pr-10 text-stone-300"

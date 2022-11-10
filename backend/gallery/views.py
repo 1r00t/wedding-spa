@@ -6,9 +6,18 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 
-class PostListCreate(generics.ListCreateAPIView):
+class PostList(generics.ListAPIView):
     queryset = models.Post.objects.all()
-    serializer_class = serializers.PostSerializer
+    serializer_class = serializers.PostListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class PostCreate(generics.CreateAPIView):
+    queryset = models.Post.objects.all()
+    serializer_class = serializers.PostCreateSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -17,7 +26,7 @@ class PostListCreate(generics.ListCreateAPIView):
 
 class PostDetail(generics.RetrieveAPIView):
     queryset = models.Post.objects.all()
-    serializer_class = serializers.PostSerializer
+    serializer_class = serializers.PostListSerializer
     permission_classes = [IsAuthenticated]
 
 
@@ -30,7 +39,7 @@ class CategoryList(generics.ListAPIView):
 
 class CategoryDetail(generics.ListAPIView):
     queryset = models.Post.objects.all()
-    serializer_class = serializers.PostSerializer
+    serializer_class = serializers.PostListSerializer
     permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):

@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ params, fetch, locals }) => {
     const id = params.id
     let post: PostType
 
-    const response = await fetch(`http://localhost:8000/posts/${id}/`)
+    const response = await fetch(`http://localhost:8000/posts/${id}/?picture_rato=&picture_sm=12&picture_md=12&picture_lg=12&picture_xl=12&picture_2xl=12`)
 
     if (response.ok) {
         post = await response.json()

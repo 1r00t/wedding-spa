@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { PaginatedPostsType } from '$lib/types'
 	import { createEventDispatcher } from 'svelte'
-	import { paginatedPosts, category } from '$lib/stores'
-
-	let currentPage = 1 // TODO: this should also be a store
+	import { paginatedPosts, category, currentPage } from '$lib/stores'
+	import { goto } from '$app/navigation'
 
 	const dispatch = createEventDispatcher()
 
@@ -14,7 +13,8 @@
 		if (response.ok) {
 			const postsResponse: PaginatedPostsType = await response.json()
 			$paginatedPosts = postsResponse
-			currentPage = postsResponse.current
+			$currentPage = postsResponse.current
+			goto(`/?page=${$currentPage}`)
 			dispatch('newPage')
 		}
 	}
@@ -40,8 +40,10 @@
 			<polyline points="15 6 9 12 15 18" />
 		</svg></button
 	>
-	{currentPage}
-	<button disabled={$paginatedPosts.next == null} on:click={() => getPage($paginatedPosts.next)}
+	{$currentPage}
+	<button
+		disabled={$paginatedPosts.next == null}
+		on:click={() => goto('/?page=' + $paginatedPosts.next)}
 		><svg
 			xmlns="http://www.w3.org/2000/svg"
 			class:stroke-stone-300={$paginatedPosts.next == null}

@@ -1,11 +1,9 @@
-from enum import unique
-from unicodedata import name
 import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
 
-from django_resized import ResizedImageField
+from pictures.models import PictureField
 
 
 class Category(models.Model):
@@ -21,13 +19,17 @@ class Category(models.Model):
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    foto = ResizedImageField(
-        size=[None, 2160],
-        upload_to="user_uploads",
-        quality=90,
-        force_format="jpeg",
-        blank=True,
+
+    height_field = models.PositiveIntegerField(blank=True, null=True)
+    width_field = models.PositiveIntegerField(blank=True, null=True)
+
+    picture = PictureField(
+        upload_to="pictures",
+        aspect_ratios=[None, "1/1"],
+        width_field="width_field",
+        height_field="height_field",
     )
+
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="category", default=1
     )
