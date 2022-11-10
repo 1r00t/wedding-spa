@@ -38,8 +38,9 @@ const username: Action = async ({ request, fetch, cookies }) => {
 	})
 	if (response.ok) {
 		const { refresh, access } = await response.json()
-		cookies.set('refresh', refresh)
-		cookies.set('access', access)
+		// TODO: set cookies to secure?
+		cookies.set('refresh', refresh, { httpOnly: true })
+		cookies.set('access', access, { httpOnly: true })
 		throw redirect(301, '/')
 	}
 }

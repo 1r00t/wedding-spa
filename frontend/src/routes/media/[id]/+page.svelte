@@ -3,7 +3,7 @@
 	import Foto from '$lib/components/Foto.svelte'
 	import { page } from '$app/stores'
 	import type { PageData } from './$types'
-	import { goto, afterNavigate } from '$app/navigation'
+	import { afterNavigate } from '$app/navigation'
 	import { base } from '$app/paths'
 
 	export let data: PageData
@@ -17,7 +17,7 @@
 </script>
 
 <button
-	on:click={() => goto(previousPage)}
+	on:click={() => history.back()}
 	class="rounded-full border border-stone-600 p-2 transition-all hover:scale-105 hover:shadow-md active:translate-y-1 active:shadow-sm"
 >
 	<svg
