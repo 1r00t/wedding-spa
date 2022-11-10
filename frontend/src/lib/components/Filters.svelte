@@ -2,6 +2,7 @@
 	import type { CategoryType, PaginatedPostsType } from '$lib/types'
 	import { category, paginatedPosts } from '$lib/stores'
 	import { createEventDispatcher } from 'svelte'
+	import { goto } from '$app/navigation'
 
 	export let categories: CategoryType[]
 
@@ -15,6 +16,7 @@
 			const postsResponse: PaginatedPostsType = await response.json()
 			$paginatedPosts = postsResponse
 			dispatch('newPage')
+			goto('/')
 		}
 	}
 

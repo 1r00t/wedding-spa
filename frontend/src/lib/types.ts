@@ -27,6 +27,7 @@ export type PictureType = {
 			sources: {
 				'image/webp': PictureSourcesType
 			}
+			media: string
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { paginatedPosts, category } from '$lib/stores'
+	import { paginatedPosts, category, currentPage } from '$lib/stores'
 
 	import type { PostType, CategoryType } from '$lib/types'
 
@@ -9,6 +9,8 @@
 	import UploadButton from '$lib/components/UploadButton.svelte'
 	import Pagination from '$lib/components/Pagination.svelte'
 	import Filters from '$lib/components/Filters.svelte'
+
+	$: $page.url.searchParams.set('page', `${$currentPage}`)
 
 	$paginatedPosts = $page.data.paginatedPosts
 	$category = $page.data.categories[0]

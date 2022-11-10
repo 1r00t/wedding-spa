@@ -1,4 +1,6 @@
-django-resized==1.0.2
 djangorestframework==3.14.0
 Pillow==9.3.0
 django-cors-headers==3.13.0
+djangorestframework-simplejwt==5.2.2
+django-pictures==1.0rc5
+django-cleanup==6.0.0
