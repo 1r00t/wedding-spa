@@ -1,20 +1,40 @@
 import type { RequestHandler } from './$types'
+import { BACKEND_URL } from '$env/static/private'
+import { error } from '@sveltejs/kit'
+import type { PaginatedPostsType } from '$lib/types'
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
-	// TODO: wenn ?category= angegeben wird, dann muss der request an /posts/categories/<id>/ gehen
 	const page = url.searchParams.get('page' ?? '1')
 	const categoryId = url.searchParams.get('category' ?? '1')
 
 	let requestUrl = ''
 
 	if (Number(categoryId) > 1) {
-		requestUrl = `http://localhost:8000/posts/categories/${categoryId}/?page=${page}&picture_ratio=1%2F1&picture_sm=12&picture_md=12&picture_lg=4&picture_xl=4&picture_2xl=4`
+		requestUrl = `${BACKEND_URL}/posts/categories/${categoryId}/?page=${page}&picture_ratio=1%2F1&picture_sm=10&picture_md=10&picture_lg=4&picture_xl=4&picture_2xl=4`
 	} else {
-		requestUrl = `http://localhost:8000/posts/?page=${page}&picture_ratio=1%2F1&picture_sm=12&picture_md=12&picture_lg=4&picture_xl=4&picture_2xl=4`
+		requestUrl = `${BACKEND_URL}/posts/?page=${page}&picture_ratio=1%2F1&picture_sm=10&picture_md=10&picture_lg=4&picture_xl=4&picture_2xl=4`
 	}
 	const response = await fetch(requestUrl)
 
-	if (response.ok) return new Response(JSON.stringify(await response.json()))
+	if (response.ok) {
+		const paginatedPosts: PaginatedPostsType = await response.json()
 
-	return new Response(JSON.stringify({ url }))
+		const next = paginatedPosts.next
+		const previous = paginatedPosts.previous
+		const posts = paginatedPosts.results
+		const current = paginatedPosts.current
+		const count = paginatedPosts.count
+
+		return new Response(
+			JSON.stringify({
+				next,
+				previous,
+				posts,
+				current,
+				count
+			})
+		)
+	}
+
+	throw error(response.status, 'Konnte keine Bilder laden!')
 }

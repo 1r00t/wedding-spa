@@ -16,6 +16,15 @@
 	let fileInputEl: HTMLInputElement
 	let imageFiles: File[] = []
 	let videoFiles: File[] = []
+	let loadedImages = 0
+
+	$: if (imageFileCount > 0 && loadedImages == imageFileCount) {
+		showModal = false
+		loading = false
+	}
+
+	const controller = new AbortController()
+	const signal = controller.signal
 
 	function inputChange() {
 		const files = fileInputEl.files
@@ -47,15 +56,15 @@
 					Authorization: `Bearer ${$accessToken}`
 				},
 				method: 'POST',
-				body: formData
+				body: formData,
+				signal: signal
 			})
 			if (response.ok) {
 				const post = await response.json()
+				loadedImages += 1
 				dispatch('newPost', post)
-				showModal = false
 			}
 		})
-		loading = false
 	}
 </script>
 
@@ -73,7 +82,10 @@
 			<h4 class="">Dateien auswählen</h4>
 			<button
 				class="rounded-full bg-red-400 p-0.5 text-red-50 transition-all duration-75 hover:bg-red-600 hover:text-stone-50 hover:shadow-md"
-				on:click={() => (showModal = false)}
+				on:click={() => {
+					showModal = false
+					controller.abort()
+				}}
 				><svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="16"
@@ -131,27 +143,27 @@
 				{#if imageFileCount || videoFileCount}
 					<p class="flex flex-col text-center" in:fly>
 						{#if imageFileCount}
-							<span
-								><strong>{imageFileCount}</strong> Bild{imageFileCount > 1 ? 'er' : ''} ausgewählt</span
-							>
+							<span>
+								<strong>{imageFileCount}</strong> Bild{imageFileCount > 1 ? 'er' : ''} ausgewählt
+							</span>
 						{/if}
 						{#if videoFileCount}
-							<span
-								><strong>{videoFileCount}</strong> Video{videoFileCount > 1 ? 's' : ''} ausgewählt</span
-							>
+							<span>
+								<strong>{videoFileCount}</strong> Video{videoFileCount > 1 ? 's' : ''} ausgewählt
+							</span>
 						{/if}
 					</p>
 				{/if}
 				<p class="mt-10 flex justify-end gap-4">
 					<button
-						disabled={allFilesCount < 1}
+						disabled={allFilesCount < 1 || loading}
 						on:click={uploadData}
-						class="rounded-md border border-none bg-emerald-500 px-4 py-2 text-emerald-50 shadow-md transition-all hover:bg-emerald-600 hover:shadow-sm active:translate-y-1 disabled:bg-stone-100 disabled:text-stone-400 disabled:shadow-none disabled:active:translate-y-0"
+						class="flex items-center space-x-2 rounded-md border border-none bg-emerald-500 px-4 py-2 text-emerald-50 shadow-md transition-all hover:bg-emerald-600 hover:shadow-sm active:translate-y-1 disabled:bg-stone-100 disabled:text-stone-400 disabled:shadow-none disabled:active:translate-y-0"
 					>
 						<span>hochladen</span>
 						{#if loading}
-							<!-- loading not working??? -->
 							<svg
+								class="animate-spin"
 								xmlns="http://www.w3.org/2000/svg"
 								width="24"
 								height="24"

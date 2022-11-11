@@ -1,48 +1,53 @@
 <script lang="ts">
 	import type { PostType } from '$lib/types'
-	import { fly } from 'svelte/transition'
-	import { browserWidth } from '$lib/stores'
 	import { onMount } from 'svelte'
 
+	export let ratio = '1/1'
+
 	export let post: PostType
-	export let isLink = true
 
-	// console.log(post)
-	// console.log(post.picture.ratios['1/1'].sources['image/webp'])
+	let imgEl: HTMLImageElement
+	let srcEl: HTMLSourceElement
 
-	const srcset = Object.entries(post.picture.ratios['1/1'].sources['image/webp'])
+	const srcset = Object.entries(post.picture.ratios[ratio]?.sources['image/webp'])
 		.map((s) => `http://localhost:8000${s[1]} ${s[0]}w`)
 		.join(', ')
-	const sizes = post.picture.ratios['1/1'].media
-	// console.log(srcset)
+
+	const sizes = post.picture.ratios[ratio].media
+
+	onMount(() => {
+		let options = {
+			root: null,
+			rootMargin: '0px',
+			threshold: 0
+		}
+		const observer = new IntersectionObserver((entries) => {
+			if (entries[0].isIntersecting) {
+				imgEl.src = 'http://localhost:8000' + post.picture.url
+				imgEl.height = post.picture.height
+				imgEl.width = post.picture.width
+				srcEl.srcset = srcset
+			}
+		}, options)
+		observer.observe(imgEl)
+	})
 </script>
 
-{#if isLink}
-	<article in:fly class="w-full">
-		<a href="media/{post.id}">
-			<picture>
-				<source type="image/webp" {srcset} {sizes} alt="Foto von {post.user.username}" />
-				<img
-					src={'http://localhost:8000' + post.picture.url}
-					alt=""
-					width={post.picture.width}
-					height={post.picture.height}
-					loading="lazy"
-				/>
-			</picture>
-		</a>
-	</article>
-{:else}
-	<article in:fly class="flex w-full justify-center overflow-y-auto">
-		<picture class="">
-			<source type="image/webp" {srcset} {sizes} alt="Foto von {post.user.username}" />
-			<img
-				src={'http://localhost:8000' + post.picture.url}
-				alt=""
-				width={post.picture.width}
-				height={post.picture.height}
-				loading="lazy"
-			/>
-		</picture>
-	</article>
-{/if}
+<picture>
+	<source
+		bind:this={srcEl}
+		type="image/webp"
+		srcset=""
+		{sizes}
+		alt="Foto von {post.user.username}"
+	/>
+	<img
+		bind:this={imgEl}
+		src=""
+		alt=""
+		width=""
+		height=""
+		loading="lazy"
+		class="bg-gradient-to-br from-stone-100 to-stone-200 transition-opacity"
+	/>
+</picture>

@@ -1,35 +1,17 @@
-export type PictureSourcesType = {
-	'100': string
-	'200': string
-	'300': string
-	'400': string
-	'500': string
-	'600': string
-	'700': string
-	'800': string
-	'900': string
-	'1000': string
-	'1100': string
-	'1200': string
+interface ImageTypeFile {
+	[size: string]: string
 }
 
-export type PictureType = {
+interface Ratio {
+	sources: ImageTypeFile
+	media: string
+}
+
+interface Picture {
 	url: string
 	width: number
 	height: number
-	ratios: {
-		null: {
-			sources: {
-				'image/webp': PictureSourcesType
-			}
-		}
-		'1/1': {
-			sources: {
-				'image/webp': PictureSourcesType
-			}
-			media: string
-		}
-	}
+	ratios: { [ratio: string]: Ratio }
 }
 
 export type PostType = {
@@ -37,7 +19,7 @@ export type PostType = {
 	user: {
 		username: string
 	}
-	picture: PictureType
+	picture: Picture
 	category: CategoryType
 }
 

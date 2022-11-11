@@ -1,60 +1,87 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { paginatedPosts, category, currentPage } from '$lib/stores'
 
-	import type { PostType, CategoryType } from '$lib/types'
-
-	import UploadModal from '$lib/components/UploadModal.svelte'
 	import Foto from '$lib/components/Foto.svelte'
+	import ChevLeft from '$lib/components/icons/ChevLeft.svelte'
+	import ChevRight from '$lib/components/icons/ChevRight.svelte'
+	import UploadModal from '$lib/components/UploadModal.svelte'
 	import UploadButton from '$lib/components/UploadButton.svelte'
-	import Pagination from '$lib/components/Pagination.svelte'
-	import Filters from '$lib/components/Filters.svelte'
+	import { afterNavigate, goto } from '$app/navigation'
+	import { onMount } from 'svelte'
 
-	$: $page.url.searchParams.set('page', `${$currentPage}`)
-
-	$paginatedPosts = $page.data.paginatedPosts
-	$category = $page.data.categories[0]
-
-	let categories: CategoryType[] = $page.data.categories
+	let posts = $page.data.posts
+	let pageNext = $page.data.next
+	let pagePrevious = $page.data.previous
+	let pageCurrent = $page.data.current
+	let resultCount = Math.ceil($page.data.count / 100)
 
 	let showModal = false
-	let scrollToY = 0
 
-	function newPost(event: { detail: PostType }) {
-		// TODO: remove n posts from bottom and somehow update paginantion ?
-		const post = event.detail
-		$paginatedPosts.results = [post, ...$paginatedPosts.results]
+	let scrollY = 0
+
+	async function getPage(page: number) {
+		const response = await fetch('api/posts?page=' + page)
+		if (response.ok) {
+			const json = await response.json()
+			posts = json.posts
+			pageNext = json.next
+			pagePrevious = json.previous
+			pageCurrent = json.current
+		}
 	}
 
-	function newPage() {
-		scrollToY = 0
-	}
+	afterNavigate(({ from }) => {
+		console.log(from)
+		if (from?.routeId === '/[id]') {
+			const postId = from?.params?.id as string
+			scrollY = document.getElementById(postId)?.scrollTop
+
+			// TODO continue
+		}
+	})
 </script>
 
-<svelte:window bind:scrollY={scrollToY} />
+<svelte:window bind:scrollY />
 
+<!-- MODAL -->
 {#if showModal}
-	<UploadModal bind:showModal on:newPost={newPost} />
+	<UploadModal bind:showModal />
 {/if}
 
-<section class="mt-10">
-	<h1 class="text-3xl">Galerie</h1>
+<!-- TITLE -->
+<section class="mt-10 text-center">
+	<h2 class="text-4xl">Hochzeitsbilder</h2>
 </section>
 
-<section class="mt-10 flex justify-end">
+<!-- UPLOAD BUTTON -->
+<section class="mt-20 flex justify-end">
 	<UploadButton bind:showModal />
 </section>
 
-<section class="mt-10">
-	<Filters {categories} />
+<!-- FOTOS -->
+<section class="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2">
+	{#each posts as post (post.id)}
+		<article id={post.id} class="overflow-hidden rounded-md">
+			<a href="/{post.id}">
+				<Foto {post} ratio={'1/1'} />
+			</a>
+		</article>
+	{/each}
 </section>
 
-<section class="mt-10">
-	<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-		{#each $paginatedPosts.results as post (post.id)}
-			<Foto {post} />
-		{/each}
-	</div>
+<!-- PAGINATION -->
+<section class="mt-10 flex items-center justify-center space-x-4">
+	<button
+		class="disabled:text-stone-300"
+		disabled={pagePrevious === null}
+		on:click={() => getPage(pagePrevious)}><ChevLeft /></button
+	>
+	<span>{pageCurrent}</span><span class="text-stone-400">/</span><span class="text-stone-400"
+		>{resultCount}</span
+	>
+	<button
+		class="disabled:text-stone-300"
+		disabled={pageNext === null}
+		on:click={() => getPage(pageNext)}><ChevRight /></button
+	>
 </section>
-
-<Pagination on:newPage={newPage} />
