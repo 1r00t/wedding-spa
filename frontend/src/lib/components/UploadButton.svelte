@@ -4,10 +4,9 @@
 
 <button
 	on:click={() => (showModal = true)}
-	class="flex items-center gap-2 rounded-full border border-stone-600 bg-stone-50 py-2 px-4 transition-all hover:scale-105 hover:shadow-md active:translate-y-1 active:shadow-sm"
+	class="flex h-12 items-center gap-2 rounded-full border border-stone-600 bg-white px-4 transition-all hover:scale-105 hover:shadow-md active:translate-y-1 active:shadow-sm"
 	><svg
 		xmlns="http://www.w3.org/2000/svg"
-		class="icon icon-tabler icon-tabler-upload"
 		width="24"
 		height="24"
 		viewBox="0 0 24 24"

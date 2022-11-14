@@ -1,27 +1,29 @@
 <script lang="ts">
-	import type { CategoryType, PaginatedPostsType } from '$lib/types'
-	import { category, paginatedPosts } from '$lib/stores'
+	import type { CategoryType } from '$lib/types'
+	import { posts, count, current, next, previous, categoryId } from '$lib/stores'
 	import { createEventDispatcher } from 'svelte'
-	import { goto } from '$app/navigation'
 
 	export let categories: CategoryType[]
 
 	const dispatch = createEventDispatcher()
 
-	let selectedCategoryId: number
+	let selectedCategoryId: number = $categoryId
 
 	async function getPosts() {
-		const response = await fetch(`/api/posts?page=1&category=${$category.id}`)
+		const response = await fetch(`/api/posts?page=1&category=${selectedCategoryId}`)
 		if (response.ok) {
-			const postsResponse: PaginatedPostsType = await response.json()
-			$paginatedPosts = postsResponse
+			const postsResponse = await response.json()
+			$posts = postsResponse.posts
+			$count = postsResponse.count
+			$current = postsResponse.current
+			$next = postsResponse.next
+			$previous = postsResponse.previous
+			$categoryId = selectedCategoryId
 			dispatch('newPage')
-			goto('/')
 		}
 	}
 
 	async function setCategory() {
-		$category = categories.find((c) => c.id === selectedCategoryId) || categories[0]
 		await getPosts()
 	}
 </script>
@@ -29,7 +31,19 @@
 <select
 	name="categories"
 	id="categories"
-	class="rounded-full"
+	class="h-12 rounded-full border-stone-600"
+	bind:value={selectedCategoryId}
+	on:change={setCategory}
+>
+	{#each categories as category (category.id)}
+		<option value={category.id}>{category.name}</option>
+	{/each}
+</select>
+
+<select
+	name="users"
+	id="users"
+	class="h-12 rounded-full border-stone-600"
 	bind:value={selectedCategoryId}
 	on:change={setCategory}
 >

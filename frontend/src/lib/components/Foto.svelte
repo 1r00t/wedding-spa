@@ -24,8 +24,8 @@
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
 				imgEl.src = 'http://localhost:8000' + post.picture.url
-				imgEl.height = post.picture.height
-				imgEl.width = post.picture.width
+				// imgEl.height = post.picture.height
+				// imgEl.width = post.picture.width
 				srcEl.srcset = srcset
 			}
 		}, options)
@@ -33,21 +33,23 @@
 	})
 </script>
 
-<picture>
-	<source
-		bind:this={srcEl}
-		type="image/webp"
-		srcset=""
-		{sizes}
-		alt="Foto von {post.user.username}"
-	/>
-	<img
-		bind:this={imgEl}
-		src=""
-		alt=""
-		width=""
-		height=""
-		loading="lazy"
-		class="bg-gradient-to-br from-stone-100 to-stone-200 transition-opacity"
-	/>
-</picture>
+<div>
+	<picture>
+		<source
+			bind:this={srcEl}
+			type="image/webp"
+			srcset=""
+			{sizes}
+			alt="Foto von {post.user.username}"
+		/>
+		<img
+			bind:this={imgEl}
+			src=""
+			alt=""
+			width={post.picture.width}
+			height={post.picture.height}
+			loading="lazy"
+			class="bg-gradient-to-br from-stone-100 to-stone-200 transition-opacity"
+		/>
+	</picture>
+</div>

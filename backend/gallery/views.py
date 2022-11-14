@@ -2,8 +2,19 @@ from gallery import serializers
 from gallery import models
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
+
+
+class OwnPostPermission(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.user == request.user
+
+
+class PostDelete(generics.DestroyAPIView):
+    queryset = models.Post.objects.all()
+    serializer_class = serializers.PostListSerializer
+    permission_classes = [OwnPostPermission]
 
 
 class PostList(generics.ListAPIView):
