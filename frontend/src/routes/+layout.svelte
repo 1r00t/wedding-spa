@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { accessToken, browserWidth } from '$lib/stores'
+	import { accessToken } from '$lib/stores'
 	import { enhance } from '$app/forms'
 	import { page } from '$app/stores'
 	import '../fonts.css'
 	import '../app.postcss'
 
-	accessToken.set($page.data.token)
+	accessToken.set($page.data.token) // TODO: was wenn token abgelaufen ist??
 </script>
-
-<svelte:window bind:innerWidth={$browserWidth} />
 
 <header
 	class="fixed top-0 z-10 flex h-24 w-full items-center justify-between bg-stone-700 pr-10 text-stone-300"
@@ -29,11 +27,7 @@
 	</nav>
 </header>
 
-<main class="mt-24 min-h-[calc(100vh-6rem)] bg-stone-100 pb-20">
-	<div class="mx-auto max-w-md px-10 pt-10 sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
-		<slot />
-	</div>
-</main>
+<slot />
 
 <style global lang="postcss">
 	body {

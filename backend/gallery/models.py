@@ -25,7 +25,7 @@ class Post(models.Model):
 
     picture = PictureField(
         upload_to="pictures",
-        aspect_ratios=[None, "1/1"],
+        aspect_ratios=[None, "1/1", "4/3"],
         width_field="width_field",
         height_field="height_field",
     )
