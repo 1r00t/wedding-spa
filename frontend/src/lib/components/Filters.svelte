@@ -1,9 +1,6 @@
 <script lang="ts">
-	import type { CategoryType } from '$lib/types'
-	import { posts, count, current, next, previous, categoryId } from '$lib/stores'
+	import { posts, count, current, next, previous, categoryId, categories } from '$lib/stores'
 	import { createEventDispatcher } from 'svelte'
-
-	export let categories: CategoryType[]
 
 	const dispatch = createEventDispatcher()
 
@@ -35,7 +32,7 @@
 	bind:value={selectedCategoryId}
 	on:change={setCategory}
 >
-	{#each categories as category (category.id)}
+	{#each $categories as category (category.id)}
 		<option value={category.id}>{category.name}</option>
 	{/each}
 </select>

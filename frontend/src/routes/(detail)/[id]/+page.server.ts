@@ -19,12 +19,13 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 }
 
 export const actions: Actions = {
+	// DELETE POST
 	delete: async ({ fetch, request }) => {
 		const formData = await request.formData()
 		const postId = formData.get('id') as string
 		const url = `${BACKEND_URL}/posts/${postId}/delete/`
 		const response = await fetch(url, {
-			method: "DELETE"
+			method: 'DELETE'
 		})
 		if (response.ok) {
 			throw redirect(303, '/')

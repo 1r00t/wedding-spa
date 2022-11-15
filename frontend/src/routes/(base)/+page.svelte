@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { posts, count, current, next, previous, categoryId } from '$lib/stores'
+	import { posts, count, current, next, previous, categoryId, categories } from '$lib/stores'
 
 	import Foto from '$lib/components/Foto.svelte'
 	import UploadModal from '$lib/components/UploadModal.svelte'
@@ -13,12 +13,11 @@
 	$previous = $page.data.previous
 	$current = $page.data.current
 	$count = $page.data.count
+	$categories = $page.data.categories
 
 	if ($categoryId > 1) {
 		$posts = $posts.filter((post) => post.category.id == $categoryId)
 	}
-
-	let categories = $page.data.categories
 
 	let showModal = false
 
@@ -44,7 +43,7 @@
 		<UploadButton bind:showModal />
 	</div>
 	<div class="sm:order-first">
-		<Filters {categories} />
+		<Filters />
 	</div>
 </section>
 
