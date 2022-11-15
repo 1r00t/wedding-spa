@@ -9,6 +9,12 @@
 	import Maximize from '$lib/components/icons/Maximize.svelte'
 	const post: PostType = $page.data.post
 	const maxWidth = post.picture.width > 1024 ? 1024 : post.picture.width
+
+	function submitForm(e: MouseEvent) {
+		if (!confirm('Wirklich löschen?')) {
+			e.preventDefault()
+		}
+	}
 </script>
 
 <section class="flex justify-center">
@@ -42,10 +48,10 @@
 			<form action="?/delete" method="POST" use:enhance>
 				<input type="hidden" name="id" value={post.id} />
 				<button
+					on:click={submitForm}
 					type="submit"
 					title="löschen"
 					class="flex items-center rounded-full border border-rose-600 bg-stone-50 p-2 text-rose-600 transition-all hover:scale-105 hover:shadow-md active:translate-y-1 active:shadow-sm"
-					on:click={() => confirm('Wirklich loeschen?')}
 				>
 					<Delete />
 				</button>

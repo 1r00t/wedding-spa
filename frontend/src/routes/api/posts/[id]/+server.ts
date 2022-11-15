@@ -9,6 +9,7 @@ export const GET: RequestHandler = async ({ fetch, params }) => {
 
 	const response = await fetch(requestUrl)
 
+
 	if (response.ok) {
 		return new Response(
 			JSON.stringify({
@@ -16,6 +17,5 @@ export const GET: RequestHandler = async ({ fetch, params }) => {
 			})
 		)
 	}
-
-	throw error(response.status, 'Konnte keine Bilder laden!')
+	throw error(response.status, response.statusText)
 }

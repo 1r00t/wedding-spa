@@ -39,15 +39,3 @@
 		<option value={category.id}>{category.name}</option>
 	{/each}
 </select>
-
-<select
-	name="users"
-	id="users"
-	class="h-12 rounded-full border-stone-600"
-	bind:value={selectedCategoryId}
-	on:change={setCategory}
->
-	{#each categories as category (category.id)}
-		<option value={category.id}>{category.name}</option>
-	{/each}
-</select>
