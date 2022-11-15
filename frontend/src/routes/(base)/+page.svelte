@@ -6,6 +6,7 @@
 	import UploadModal from '$lib/components/UploadModal.svelte'
 	import UploadButton from '$lib/components/UploadButton.svelte'
 	import Filters from '$lib/components/Filters.svelte'
+	import { invalidate } from '$app/navigation'
 
 	$posts = $page.data.posts
 	$next = $page.data.next
@@ -20,11 +21,16 @@
 	let categories = $page.data.categories
 
 	let showModal = false
+
+	async function reload() {
+		await invalidate('app:posts')
+		$posts = $page.data.posts
+	}
 </script>
 
 <!-- MODAL -->
 {#if showModal}
-	<UploadModal bind:showModal />
+	<UploadModal bind:showModal on:newPost={reload} />
 {/if}
 
 <!-- TITLE -->
@@ -43,7 +49,7 @@
 </section>
 
 <!-- FOTOS -->
-<section class="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2">
+<section class="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2" data-sveltekit-prefetch>
 	{#each $posts as post (post.id)}
 		<article id={post.id} class="aspect-square overflow-hidden rounded-md">
 			<a href="/{post.id}">

@@ -7,8 +7,9 @@
 	import Download from '$lib/components/icons/Download.svelte'
 	import Delete from '$lib/components/icons/Delete.svelte'
 	import Maximize from '$lib/components/icons/Maximize.svelte'
+	import BackArrow from '$lib/components/icons/BackArrow.svelte'
+
 	const post: PostType = $page.data.post
-	const maxWidth = post.picture.width > 1024 ? 1024 : post.picture.width
 
 	function submitForm(e: MouseEvent) {
 		if (!confirm('Wirklich löschen?')) {
@@ -17,8 +18,20 @@
 	}
 </script>
 
-<section class="flex justify-center">
-	<div class="max-w-[{maxWidth}px] relative">
+<section class="mx-auto mt-10 flex max-w-md sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl">
+	<a
+		href={`/#${post.id}`}
+		data-sveltekit-prefetch
+		class="rounded-full border border-stone-600 bg-stone-50 p-2 transition-all hover:scale-105 hover:shadow-md active:translate-y-1 active:shadow-sm"
+	>
+		<BackArrow />
+	</a>
+</section>
+
+<section
+	class="mx-auto mt-10 flex max-w-md justify-center sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl"
+>
+	<div class="relative">
 		<Foto {post} ratio={'4/3'} />
 		<span class="absolute bottom-0 right-1 text-xs text-stone-50">&#169;{post.user.username}</span>
 	</div>

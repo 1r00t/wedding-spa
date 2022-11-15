@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import { fly } from 'svelte/transition'
 
 	import type { ActionData } from './$types'
 
@@ -7,7 +8,7 @@
 </script>
 
 {#if !form?.passwordCorrect}
-	<section class="mt-10 flex flex-col space-y-10">
+	<section class="mt-10 flex flex-col space-y-10" out:fly={{ x: -500, duration: 400 }}>
 		<h3 class="text-2xl font-semibold">Hallo Hochzeitsgast!</h3>
 		<p>
 			Auf dieser Webseite kannst du dir alle Fotos und Videos anschauen, die auf unserer Hochzeit
@@ -34,7 +35,7 @@
 		{/if}
 	</section>
 {:else}
-	<section class="mt-10 flex flex-col space-y-10">
+	<section class="mt-10 flex flex-col space-y-10" in:fly={{ delay: 400, x: 500 }}>
 		<h3 class="text-2xl font-semibold">Benutzernamen wählen</h3>
 		<p>Jetzt kannst du einen Benutzernamen wählen.</p>
 		<p>
