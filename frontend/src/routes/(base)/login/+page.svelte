@@ -8,7 +8,10 @@
 </script>
 
 {#if !form?.passwordCorrect}
-	<section class="mt-10 flex flex-col space-y-10" out:fly={{ x: -500, duration: 400 }}>
+	<section
+		class="mx-auto mt-10 flex max-w-lg flex-col space-y-10"
+		out:fly={{ x: -500, duration: 400 }}
+	>
 		<h3 class="text-2xl font-semibold">Hallo Hochzeitsgast!</h3>
 		<p>
 			Auf dieser Webseite kannst du dir alle Fotos und Videos anschauen, die auf unserer Hochzeit
@@ -31,11 +34,11 @@
 			/>
 		</form>
 		{#if form?.passwordWrong}
-			<p>Password falsch!</p>
+			<p class="text-center text-rose-600">Password falsch!</p>
 		{/if}
 	</section>
 {:else}
-	<section class="mt-10 flex flex-col space-y-10" in:fly={{ delay: 400, x: 500 }}>
+	<section class="mx-auto mt-10 flex max-w-lg flex-col space-y-10" in:fly={{ delay: 400, x: 500 }}>
 		<h3 class="text-2xl font-semibold">Benutzernamen wählen</h3>
 		<p>Jetzt kannst du einen Benutzernamen wählen.</p>
 		<p>

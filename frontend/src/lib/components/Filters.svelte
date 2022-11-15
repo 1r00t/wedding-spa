@@ -28,7 +28,7 @@
 <select
 	name="categories"
 	id="categories"
-	class="h-12 rounded-full border-stone-600"
+	class="h-12 rounded-full border-stone-600 focus:border-stone-600 focus:shadow-md focus:ring-0"
 	bind:value={selectedCategoryId}
 	on:change={setCategory}
 >
