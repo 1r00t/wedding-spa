@@ -2,7 +2,8 @@
 	import { fade, fly, slide } from 'svelte/transition'
 	import { clickOutside } from '$lib/helpers'
 	import { createEventDispatcher } from 'svelte'
-	import { accessToken } from '$lib/stores'
+
+	import { page } from '$app/stores'
 
 	const dispatch = createEventDispatcher()
 
@@ -53,7 +54,7 @@
 			formData.append('picture', file)
 			const response = await fetch('http://localhost:8000/posts/create/', {
 				headers: {
-					Authorization: `Bearer ${$accessToken}`
+					'X-USERNAME': $page.data.user.username
 				},
 				method: 'POST',
 				body: formData,
@@ -63,6 +64,8 @@
 				const post = await response.json()
 				loadedImages += 1
 				dispatch('newPost', post)
+			} else {
+				console.error(response.status, response.statusText)
 			}
 		})
 	}

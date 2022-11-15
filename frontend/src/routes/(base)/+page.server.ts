@@ -1,19 +1,21 @@
 import { redirect } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
 import type { PostType, CategoryType } from '$lib/types'
-import { categoryId } from '$lib/stores'
 
-export const load: PageServerLoad = async ({ fetch, locals }) => {
+export const load: PageServerLoad = async ({ fetch, locals, depends }) => {
 	if (!locals.user?.isAuthenticated) {
 		throw redirect(303, '/login')
 	}
+
+	depends('app:posts')
+
 	let posts: PostType[] = []
-	let current: number = 1
+	let current = 1
 	let previous: number | null = null
 	let next: number | null = null
-	let count: number = 0
+	let count = 0
 	let categories: CategoryType[] = [{ id: 1, name: 'Alle Kategorien' }]
-	const postsResponse = await fetch(`/api/posts?page=1`)
+	const postsResponse = await fetch('/api/posts?page=1')
 	const categoriesResponse = await fetch('api/categories')
 
 	if (postsResponse.ok) {
@@ -28,7 +30,6 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (categoriesResponse.ok) {
 		const categoriesJson = await categoriesResponse.json()
 		categories = categoriesJson.categories
-
 	}
 	return {
 		posts,

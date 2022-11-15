@@ -1,7 +1,8 @@
 from gallery import serializers
 from gallery import models
 from django.shortcuts import get_object_or_404
-from rest_framework import generics
+from django.contrib.auth import get_user_model
+from rest_framework import generics, authentication, exceptions
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 
@@ -9,6 +10,20 @@ from rest_framework.response import Response
 class OwnPostPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.user == request.user
+
+
+class HeaderAuthentication(authentication.BaseAuthentication):
+    def authenticate(self, request):
+        username = request.META.get("HTTP_X_USERNAME")
+        if not username:
+            return None
+
+        try:
+            user = get_user_model().objects.get(username=username)
+        except get_user_model().DoesNotExist:
+            raise exceptions.AuthenticationFailed("User not found")
+
+        return (user, None)
 
 
 class PostDelete(generics.DestroyAPIView):
@@ -30,6 +45,7 @@ class PostCreate(generics.CreateAPIView):
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostCreateSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [HeaderAuthentication]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -24,8 +24,6 @@
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
 				imgEl.src = 'http://localhost:8000' + post.picture.url
-				// imgEl.height = post.picture.height
-				// imgEl.width = post.picture.width
 				srcEl.srcset = srcset
 			}
 		}, options)
