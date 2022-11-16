@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:17.5-alpine AS builder
 
 WORKDIR /app
 COPY . .
@@ -6,7 +6,7 @@ RUN npm install
 RUN npm run build
 
 
-FROM node:18-alpine AS deploy-node
+FROM node:17.5-alpine AS deploy-node
 WORKDIR /app
 RUN rm -rf ./*
 COPY --from=builder /app/package.json .

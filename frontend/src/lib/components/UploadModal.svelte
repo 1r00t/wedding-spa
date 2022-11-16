@@ -52,7 +52,7 @@
 		imageFiles.forEach(async (file) => {
 			let formData = new FormData()
 			formData.append('picture', file)
-			const response = await fetch('http://backend:8000/posts/create/', {
+			const response = await fetch('http://localhost:8000/posts/create/', {
 				headers: {
 					'X-USERNAME': $page.data.user.username
 				},
