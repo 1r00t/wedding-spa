@@ -10,7 +10,7 @@
 	let srcEl: HTMLSourceElement
 
 	const srcset = Object.entries(post.picture.ratios[ratio]?.sources['image/webp'])
-		.map((s) => `http://localhost:8000${s[1]} ${s[0]}w`)
+		.map((s) => `http://backend:8000${s[1]} ${s[0]}w`)
 		.join(', ')
 
 	const sizes = post.picture.ratios[ratio].media
@@ -23,7 +23,7 @@
 		}
 		const observer = new IntersectionObserver((entries) => {
 			if (entries[0].isIntersecting) {
-				imgEl.src = 'http://localhost:8000' + post.picture.url
+				imgEl.src = 'http://backend:8000' + post.picture.url
 				srcEl.srcset = srcset
 			}
 		}, options)
