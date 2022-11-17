@@ -52,7 +52,7 @@ LOGGING = {
     },
 }
 
-CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
+CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS").split(" ")
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "X-USERNAME",
