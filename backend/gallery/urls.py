@@ -10,4 +10,5 @@ urlpatterns = [
     ),
     path("<str:pk>/", views.PostDetail.as_view(), name="post-detail"),
     path("<str:pk>/delete/", views.PostDelete.as_view(), name="post-delete"),
+    path("<str:pk>/update/", views.PostUpdate.as_view(), name="post-update"),
 ]

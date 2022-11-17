@@ -28,7 +28,7 @@ const username: Action = async ({ request, fetch, cookies }) => {
 		return invalid(400, { usernameTooShort: true, passwordCorrect: true })
 	}
 
-	const response = await fetch('http://localhost:8000/login/', {
+	const response = await fetch('http://backend:8000/login/', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -36,6 +36,7 @@ const username: Action = async ({ request, fetch, cookies }) => {
 		},
 		body: JSON.stringify({ username })
 	})
+	console.log('hieasdfasdfasdfasdfr', response.status, response.statusText, response.body)
 	if (response.ok) {
 		const { refresh, access } = await response.json()
 		// TODO: set cookies to secure?

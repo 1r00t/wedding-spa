@@ -33,6 +33,12 @@ class PostCreateSerializer(serializers.ModelSerializer):
         fields = ["id", "user", "picture", "created_at", "category"]
 
 
+class PostUpadateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Post
+        fields = ["id", "category"]
+
+
 class CategoryDetailSerializer(serializers.ModelSerializer):
     posts = PostListSerializer(many=True)
 
