@@ -30,6 +30,7 @@ services:
       - media_volume:/home/app/web/user_uploads
     ports:
       - 8000:8000
+      - 80:80
     depends_on:
       - backend
 
@@ -37,8 +38,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
-    ports:
-      - 3000:3000
+    expose:
+      - 80
     depends_on:
       - backend
 
