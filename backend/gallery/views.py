@@ -51,6 +51,12 @@ class PostCreate(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
+class PostUpdate(generics.UpdateAPIView):
+    queryset = models.Post.objects.all()
+    serializer_class = serializers.PostUpadateSerializer
+    permission_classes = [IsAuthenticated]
+
+
 class PostDetail(generics.RetrieveAPIView):
     queryset = models.Post.objects.all()
     serializer_class = serializers.PostListSerializer

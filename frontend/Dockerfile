@@ -1,16 +1,5 @@
-FROM node:17.5-alpine AS builder
+FROM node:17.5-alpine
 
 WORKDIR /app
-COPY . .
-RUN npm install
-RUN npm run build
-
-
-FROM node:17.5-alpine AS deploy-node
-WORKDIR /app
-RUN rm -rf ./*
-COPY --from=builder /app/package.json .
-COPY --from=builder /app/build .
-RUN npm install --production
-ENV ORIGIN="http://localhost:3000"
-CMD ["node", "index.js"]
+ENV HOST=0.0.0.0
+CMD ["npm", "run", "dev", "--", "--host", "frontend"]
