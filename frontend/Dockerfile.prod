@@ -12,5 +12,5 @@ RUN rm -rf ./*
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/build .
 RUN npm install --production
-ENV ORIGIN="http://localhost:3000"
+ENV ORIGIN="http://dasroot.de:3000"
 CMD ["node", "index.js"]

@@ -55,6 +55,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://frontend",
     "http://frontend:3000",
+    "dasroot.de",
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
