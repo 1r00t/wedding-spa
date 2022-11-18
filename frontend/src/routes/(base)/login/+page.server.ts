@@ -34,12 +34,12 @@ const username: Action = async ({ request, fetch, cookies }) => {
 			Accept: 'application/json',
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ username })
+		body: JSON.stringify({ username: username, password: PASSWORD })
 	})
+	console.error('blablabalab', response.statusText, response.body)
 	console.log('hieasdfasdfasdfasdfr', response.status, response.statusText, response.body)
 	if (response.ok) {
 		const { refresh, access } = await response.json()
-		// TODO: set cookies to secure?
 		cookies.set('refresh', refresh, { httpOnly: true })
 		cookies.set('access', access, { httpOnly: true })
 		throw redirect(301, '/')

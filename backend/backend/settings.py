@@ -66,6 +66,9 @@ PICTURES = {
     "USE_PLACEHOLDERS": False,
 }
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = 31457280
+DATA_UPLOAD_MAX_MEMORY_SIZE = 31457280
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -121,11 +124,11 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": env("ENGINE"),
-        "NAME": env("DATABASE"),
-        "USER": env("USER"),
-        "PASSWORD": env("PASSWORD"),
-        "HOST": env("HOST"),
+        "ENGINE": env("DB_ENGINE"),
+        "NAME": env("DB_DATABASE"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
         "PORT": "",
     }
 }
