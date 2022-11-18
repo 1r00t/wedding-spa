@@ -35,6 +35,8 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS").split(" ")
 
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS").split(" ")
+
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "X-USERNAME",
 ]
@@ -163,12 +165,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = "/var/www/static/"
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "user_uploads"
+MEDIA_ROOT = "/var/www/media/"
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
