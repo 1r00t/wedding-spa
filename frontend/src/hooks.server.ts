@@ -20,7 +20,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				} else {
 					// get new access token
 					console.log('getting new access token')
-					const response = await fetch('http://backend:8000/token/refresh/', {
+					const response = await fetch('https://backend.brandts.wedding/token/refresh/', {
 						method: 'POST',
 						headers: {
 							Accept: 'application/json',

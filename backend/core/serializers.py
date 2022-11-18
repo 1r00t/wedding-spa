@@ -5,29 +5,30 @@ from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework import exceptions
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 
 class TokenObtainSerializer(TokenObtainSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields.pop("password")
 
     def validate(self, attrs):
         authenticate_kwargs = {
             self.username_field: attrs[self.username_field],
-            "password": attrs[self.username_field],
+            "password": attrs["password"],
         }
         try:
             authenticate_kwargs["request"] = self.context["request"]
         except KeyError:
             pass
 
-        # if get_user_model().objects.get(username=attrs[self.username_field]):
+        if attrs["password"] != settings.PASSWORD:
+            raise exceptions.AuthenticationFailed("No!", 403)
         user, created = get_user_model().objects.get_or_create(
             username=attrs[self.username_field]
         )
         if created:
-            user.set_password(attrs[self.username_field])
+            user.set_password(settings.PASSWORD)
             user.save()
 
         self.user = authenticate(**authenticate_kwargs)

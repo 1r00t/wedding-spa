@@ -28,7 +28,7 @@ const username: Action = async ({ request, fetch, cookies }) => {
 		return invalid(400, { usernameTooShort: true, passwordCorrect: true })
 	}
 
-	const response = await fetch('http://46.101.131.6:8000/login/', {
+	const response = await fetch('https://backend.brandts.wedding/login/', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
